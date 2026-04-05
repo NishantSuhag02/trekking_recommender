@@ -34,7 +34,7 @@ class TrekRecommender:
     def recommend(self,month,difficulty,max_days,budget):
         df = self.load_data()
 
-        filtered = self.filter_treks(self,df,month,difficulty,max_days,budget)
+        filtered = self.filter_treks(df,month,difficulty,max_days,budget)
 
         if filtered.empty:
             return []

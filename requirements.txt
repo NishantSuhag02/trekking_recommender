@@ -10,3 +10,5 @@ pandas
 requests
 
 python-multipart
+
+langchain-ollama

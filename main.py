@@ -1,15 +1,17 @@
-from fastapi import FASTAPI
+from fastapi import FastAPI
 import sqlite3
 from recommeder.engine import TrekRecommender
+from chatbot.chatbot import ChatBot
 
-app = FASTAPI()
+app = FastAPI()
 
 db_path = "treks.db"
 
 recommender = TrekRecommender(db_path)
+bot = ChatBot(db_path)
 
 def get_db():
-    conn = sqlite3.connect(db_path)
+    conn = sqlite3.connect(db_path, check_same_thread=False)
     # row_factory = sqlite3.row converts the records or rows into dict 
     # like data so that we can fetch data using column name instead of indices.
     conn.row_factory = sqlite3.Row
@@ -22,6 +24,11 @@ def home():
 @app.get('/recommend')
 def recommend(month: str, difficulty: str, days: int, budget: int):
     results = recommender.recommend(month,difficulty,days,budget)
+    return results
+
+@app.get('/chat')
+def chat(user_input: str):
+    results = bot.chat(user_input)
     return results
 
 @app.get('/treks')
